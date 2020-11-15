@@ -40,7 +40,7 @@ export const createStore = store => {
         // Update values within the store, without overwriting it's reference,
         // because other components may hold a reference to the original store.
         Object.assign(store, nv)
-        // Now, use the setter function with a newe reference to force an update
+        // Now, use the setter function with a new reference to force an update
         set({ ...store })
     }
 
