@@ -3,8 +3,8 @@ import Header from './Header'
 import MemeGenerator from './MemeGenerator'
 import { useObj } from './hooks'
 
-import Child1 from './child1.js'
-import Child2 from './child2.js'
+import Child1 from './child1.jsx'
+import Child2 from './child2.jsx'
 import useStore from './store.js'
 
 export default () => {
