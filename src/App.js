@@ -5,7 +5,7 @@ import { useObj } from './hooks'
 
 import Child1 from './child1.js'
 import Child2 from './child2.js'
-import useStore from './store.js'
+import { useStore } from './store.js'
 
 export default () => {
     useStore()

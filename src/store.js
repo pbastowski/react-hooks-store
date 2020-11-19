@@ -8,14 +8,17 @@ export const store = {
     pickRandomImage
 }
 
-const [hook, set] = createStore(store)
-export { hook as default, set }
+const useStore = createStore(store)
+
+export { store as default, useStore }
+
+window.store = store
 
 export function fetchMemeImages() {
     return fetch('https://api.imgflip.com/get_memes')
         .then(response => response.json())
         .then(({ data }) => {
-            set({ allMemeImgs: data.memes })
+            store.$set({ allMemeImgs: data.memes })
         })
 }
 
@@ -23,5 +26,5 @@ export function pickRandomImage() {
     const randNum = Math.floor(Math.random() * store.allMemeImgs.length)
     // console.log('memes:', store.$set)
     // console.log('memes:', store.allMemeImgs.length)
-    set({ randomImg: store.allMemeImgs[randNum].url })
+    store.$set({ randomImg: store.allMemeImgs[randNum].url })
 }

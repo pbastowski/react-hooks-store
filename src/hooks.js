@@ -33,6 +33,7 @@ export function useFormInput(initialValue) {
     ]
 }
 
+// Returns a useStore hook
 export const createStore = store => {
     let value, set
 
@@ -40,8 +41,33 @@ export const createStore = store => {
         // Update values within the store, without overwriting it's reference,
         // because other components may hold a reference to the original store.
         Object.assign(store, nv)
-        // Now, use the setter function with a newe reference to force an update
-        set({ ...store })
+        // Now, use the setter function with a new reference to force an update
+        set({})
+    }
+
+    Object.defineProperty(store, '$set', {
+        enumerable: false,
+        writable: false,
+        configurable: false,
+        value: setter
+    })
+
+    return () => {
+        ;[value, set] = useState()
+        return store
+    }
+}
+
+// Returns a tuple with useStore hook and the setter function
+export const createStore2 = store => {
+    let value, set
+
+    const setter = nv => {
+        // Update values within the store, without overwriting it's reference,
+        // because other components may hold a reference to the original store.
+        Object.assign(store, nv)
+        // Now, use the setter function with a new reference to force an update
+        set({})
     }
 
     return [
@@ -53,36 +79,37 @@ export const createStore = store => {
     ]
 }
 
-// export function createStore(state) {
-//     console.log('@ CREATE', getCallerFunction())
-//     let updaters = new Set()
-//     let v, setv
-//
-//     state.$set = (nv) => {
-//         state = { ...state, ...nv }
-//         for (let update of updaters) update(state)
-//     }
-//
-//     return () => {
-//         ;[v, setv] = useState(state)
-//         let codeLine = getCallerFunction()
-//
-//         updaters.add(setv)
-//         useEffect(() => {
-//             console.log('@ USE', updaters.size, codeLine)
-//             return () => {
-//                 let codeLine = getCallerFunction(-1)
-//                 let i = 0
-//                 for (let update of updaters)
-//                     console.log('D:', i++, update === setv, codeLine)
-//                 updaters.delete(setv)
-//                 console.log('@ DELETE', updaters.size, codeLine)
-//             }
-//         }, [])
-//
-//         return [state, state.$set]
-//     }
-// }
+export function createStore3(store) {
+    console.log('@ CREATE', getCallerFunction())
+    let updaters = new Set()
+    let v, setv
+
+    store.$set = nv => {
+        Object.assign(store, nv)
+        for (let update of updaters) update({})
+    }
+
+    return () => {
+        ;[v, setv] = useState(store)
+        let codeLine = getCallerFunction()
+
+        updaters.add(setv)
+
+        useEffect(() => {
+            console.log('@ USE', updaters.size, codeLine)
+            return () => {
+                let codeLine = getCallerFunction(-1)
+                let i = 0
+                for (let update of updaters)
+                    console.log('D:', i++, update === setv, codeLine)
+                updaters.delete(setv)
+                console.log('@ DELETE', updaters.size, codeLine)
+            }
+        }, [])
+
+        return store
+    }
+}
 
 function getCallerFunction(line = 3) {
     if (line === -1) return new Error().stack

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useReducer } from 'react'
 
 import { useFormInput } from './hooks'
-import { store } from './store.js'
+import store from './store.js'
 
 export default () => {
     let [inpTopText, topText] = useFormInput('')
