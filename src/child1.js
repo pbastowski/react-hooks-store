@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react'
 
-import { store, set } from './store.js'
+import xstore, { useStore } from './store3.js'
 
 export default () => {
+    let store = useStore()
     return (
         <div>
             <h4>ONE</h4>
             <input
-                onChange={e => set({ text: e.target.value })}
+                onChange={e => store.$set({ text: e.target.value })}
                 value={store.text}
             />
 

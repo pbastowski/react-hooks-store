@@ -5,10 +5,10 @@ import { useObj } from './hooks'
 
 import Child1 from './child1.js'
 import Child2 from './child2.js'
-import useStore from './store.js'
+import { useStore } from './store3.js'
 
 export default () => {
-    useStore()
+    // useStore()
     let [show, setShow] = useObj({ 1: true, 2: true, 3: true, 4: true })
 
     return (

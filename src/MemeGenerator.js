@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useReducer } from 'react'
 
 import { useFormInput } from './hooks'
-import { store } from './store.js'
+import Xstore, { useStore } from './store3.js'
 
 export default () => {
+    let store = useStore()
     let [inpTopText, topText] = useFormInput('')
     let [inpBottomText, bottomText] = useFormInput('')
 

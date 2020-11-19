@@ -1,4 +1,4 @@
-import { createStore } from './hooks.js'
+import { createStore, createStore3 } from './hooks.js'
 
 export const store = {
     allMemeImgs: [],
@@ -8,7 +8,7 @@ export const store = {
     pickRandomImage
 }
 
-const useStore = createStore(store)
+const useStore = createStore3(store)
 
 export { store as default, useStore }
 
