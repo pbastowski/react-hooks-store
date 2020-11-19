@@ -18,7 +18,7 @@ export function fetchMemeImages() {
     return fetch('https://api.imgflip.com/get_memes')
         .then(response => response.json())
         .then(({ data }) => {
-            store.$set({ allMemeImgs: data.memes })
+            store.allMemeImgs = data.memes
         })
 }
 
