@@ -26,7 +26,7 @@ export default () => {
             </div>
             <Header />
             <MemeGenerator />
-            {(console.clear(), console.log('@ APP'))}
+            {console.log('@ APP')}
         </div>
     )
 }
