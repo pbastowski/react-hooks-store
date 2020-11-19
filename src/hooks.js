@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 
 /*
     Just like the useState hook, we accept an initial value
@@ -80,7 +80,7 @@ export const createStore2 = store => {
 }
 
 export function createStore3(store) {
-    console.log('@ CREATE', getCallerFunction())
+    // console.log('@ CREATE', getCallerFunction())
     let updaters = new Set()
     let v, setv
 
@@ -90,20 +90,17 @@ export function createStore3(store) {
     }
 
     return () => {
-        ;[v, setv] = useState(store)
-        let codeLine = getCallerFunction()
+        ;[v, setv] = useState()
+        let ref = useRef()
+        if (!ref.current) ref.current = setv
 
         updaters.add(setv)
 
         useEffect(() => {
-            console.log('@ USE', updaters.size, codeLine)
+            // console.log('@ USE', updaters.size)
             return () => {
-                let codeLine = getCallerFunction(-1)
-                let i = 0
-                for (let update of updaters)
-                    console.log('D:', i++, update === setv, codeLine)
-                updaters.delete(setv)
-                console.log('@ DELETE', updaters.size, codeLine)
+                updaters.delete(ref.current)
+                // console.log('@ DELETE', updaters.size)
             }
         }, [])
 
@@ -113,7 +110,7 @@ export function createStore3(store) {
 
 function getCallerFunction(line = 3) {
     if (line === -1) return new Error().stack
-    else return new Error().stack.split('    at ')[3]
+    else return new Error().stack.split('    at ')[line]
 }
 
 export const createStore_old = state => {
